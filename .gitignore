@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.env
+.DS_Store
+Thumbs.db
+*.xlsx
+*.xls
+test-data/
+coverage/
+版本迭代/
+需求文件/
