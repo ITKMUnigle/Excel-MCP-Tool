@@ -1,6 +1,6 @@
 {
     "name": "@itkmoon/excel-mcp",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A powerful MCP tool for Excel file operations with read, write, and formatting capabilities",
     "main": "dist/index.js",
     "bin": {
