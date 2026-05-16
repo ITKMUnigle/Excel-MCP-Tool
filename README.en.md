@@ -643,43 +643,63 @@ Tested on: Windows 11, Node.js 20.x, 16GB RAM
 
 ### System Overview
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   Client Layer                       │
-│         (Claude / Cursor / Trae / Custom App)        │
-└──────────────────────┬──────────────────────────────┘
-                       │ MCP Protocol
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│                  Server Layer                        │
-│  ┌─────────┐ ┌──────────┐ ┌──────────┐ ┌─────────┐ │
-│  │read_excel│write_excel│format_   │manage_  │ │
-│  │  Tool   │  Tool     │excel Tool│sheets   │ │
-│  └────┬────┘ └────┬─────┘ └────┬─────┘ └────┬────┘ │
-│       └────────────┼────────────┼────────────┘      │
-│                    ▼            ▼                    │
-│  ┌─────────────────────────────────────────────┐    │
-│  │              Service Layer                   │    │
-│  │  ┌─────────────┐  ┌──────────────────────┐  │    │
-│  │  │ ExcelService│  │ ValidationService    │  │    │
-│  │  └─────────────┘  └──────────────────────┘  │    │
-│  └─────────────────────────────────────────────┘    │
-│                    │                                │
-│                    ▼                                │
-│  ┌─────────────────────────────────────────────┐    │
-│  │              Data Layer                     │    │
-│  │  ┌──────────┐  ┌─────────────────────────┐  │    │
-│  │  │ ExcelJS  │  │ File System             │  │    │
-│  │  │ Library  │  │                         │  │    │
-│  │  └──────────┘  └─────────────────────────┘  │    │
-│  └─────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│                Storage Layer                         │
-│              Excel Files (.xlsx/.xls)               │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Client["🖥️ Client Layer"]
+        C1["Claude Desktop"]
+        C2["Cursor IDE"]
+        C3["Trae AI"]
+        C4["Custom App"]
+    end
+
+    subgraph MCP["⚙️ MCP Server Layer"]
+        direction LR
+        subgraph Tools["📦 Tools"]
+            T1["📖 read_excel<br/>Read Tool"]
+            T2["✍️ write_excel<br/>Write Tool"]
+            T3["🎨 format_excel<br/>Format Tool"]
+            T4["📑 manage_sheets<br/>Sheet Manager"]
+            T5["ℹ️ get_file_info<br/>File Info"]
+        end
+    end
+
+    subgraph Service["🔧 Service Layer"]
+        S1["ExcelService<br/>Core Business Service"]
+        S2["ValidationService<br/>Parameter Validation"]
+    end
+
+    subgraph Data["💾 Data Layer"]
+        D1["ExcelJS Library<br/>Excel Engine"]
+        D2["File System<br/>File I/O"]
+    end
+
+    subgraph Storage["📁 Storage Layer"]
+        ST1[".xlsx Files"]
+        ST2[".xls Files"]
+    end
+
+    %% Connections
+    Client -->|"MCP Protocol<br/>JSON-RPC"| MCP
+    Tools -->|"Call"| Service
+    S1 -->|"Read/Write"| Data
+    S1 -->|"File I/O"| D2
+    Data -->|"Parse/Generate"| Storage
+    D2 -->|"Access"| Storage
+
+    %% Styling
+    classDef clientStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    classDef mcpStyle fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#e65100
+    classDef toolStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    classDef serviceStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+    classDef dataStyle fill:#fce4ec,stroke:#c62828,stroke-width:2px,color:#b71c1c
+    classDef storageStyle=#fff9c4,stroke:#f9a825,stroke-width:2px,color:#f57f17
+
+    class C1,C2,C3,C4 clientStyle
+    class MCP mcpStyle
+    class T1,T2,T3,T4,T5 toolStyle
+    class S1,S2 serviceStyle
+    class D1,D2 dataStyle
+    class ST1,ST2 storageStyle
 ```
 
 ### Project Structure
