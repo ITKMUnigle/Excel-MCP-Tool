@@ -692,7 +692,7 @@ flowchart TB
     classDef toolStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
     classDef serviceStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
     classDef dataStyle fill:#fce4ec,stroke:#c62828,stroke-width:2px,color:#b71c1c
-    classDef storageStyle=#fff9c4,stroke:#f9a825,stroke-width:2px,color:#f57f17
+    classDef storageStyle fill:#fff9c4,stroke:#f9a825,stroke-width:2px,color:#f57f17
 
     class C1,C2,C3,C4 clientStyle
     class MCP mcpStyle
@@ -831,7 +831,7 @@ SOFTWARE.
 
 ## 📞 Support
 
-- 📧 Email: support@example.com
+- 📧 Email: 524682687@qq.com
 - 💬 Issues: [GitHub Issues](https://github.com/ITKMUnigle/Excel-MCP-Tool/issues)
 - 📖 Documentation: [Wiki](https://github.com/ITKMUnigle/Excel-MCP-Tool/wiki)
 
