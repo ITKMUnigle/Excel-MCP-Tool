@@ -25,6 +25,7 @@ import {
   getFileName,
   getFileSize
 } from '../utils/helpers.js';
+import { isWriteAllowed } from '../utils/config.js';
 
 const DEFAULT_SHEET_NAME = 'Sheet1';
 
@@ -244,6 +245,16 @@ export class ExcelService {
 
   async writeFile(params: WriteExcelParams): Promise<WriteExcelResult | ErrorResponse> {
     try {
+      if (!isWriteAllowed()) {
+        return {
+          success: false,
+          error: createError(
+            ErrorCode.PERMISSION_DENIED,
+            '写操作未启用。请设置 EXCEL_ALLOW_WRITE=true、yes 或 y 后重试。'
+          )
+        };
+      }
+
       const validation = validateFilePath(params.filePath);
       if (!validation.valid) {
         return { success: false, error: validation.error! };
@@ -381,6 +392,16 @@ export class ExcelService {
 
   async formatCells(params: FormatCellParams): Promise<FormatCellResult | ErrorResponse> {
     try {
+      if (!isWriteAllowed()) {
+        return {
+          success: false,
+          error: createError(
+            ErrorCode.PERMISSION_DENIED,
+            '写操作未启用。请设置 EXCEL_ALLOW_WRITE=true、yes 或 y 后重试。'
+          )
+        };
+      }
+
       const fileValidation = validateFileExists(params.filePath);
       if (!fileValidation.valid) {
         return { success: false, error: fileValidation.error! };
@@ -479,6 +500,16 @@ export class ExcelService {
 
   async manageSheets(params: SheetManagementParams): Promise<SheetManagementResult | ErrorResponse> {
     try {
+      if (params.action !== 'list' && !isWriteAllowed()) {
+        return {
+          success: false,
+          error: createError(
+            ErrorCode.PERMISSION_DENIED,
+            '写操作未启用。请设置 EXCEL_ALLOW_WRITE=true、yes 或 y 后重试。'
+          )
+        };
+      }
+
       const fileValidation = validateFileExists(params.filePath);
       if (!fileValidation.valid) {
         return { success: false, error: fileValidation.error! };

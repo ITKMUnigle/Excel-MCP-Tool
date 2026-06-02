@@ -419,6 +419,9 @@ WORK_DIR=./data
 # 最大文件大小限制（字节，默认：100MB）
 MAX_FILE_SIZE=104857600
 
+# 是否允许写操作。开启：true/yes/y；关闭：false/no/n（默认）
+EXCEL_ALLOW_WRITE=false
+
 # 是否启用调试模式（true/false）
 DEBUG=false
 
@@ -428,6 +431,13 @@ SERVER_PORT=3000
 # 传输类型：stdio 或 http
 TRANSPORT_TYPE=stdio
 ```
+
+`EXCEL_ALLOW_WRITE` 支持以下值（大小写不敏感）：
+
+| 值 | 含义 |
+|----|------|
+| `true` / `yes` / `y` | 启用写入、格式化、创建/删除/重命名/复制/移动工作表 |
+| `false` / `no` / `n` | 禁用写操作，仅允许读取、获取文件信息和列出工作表 |
 
 ### 数字格式参考表
 
@@ -622,6 +632,10 @@ interface ErrorResponse {
    - 安全敏感失败时返回通用错误消息
    - 详细错误信息仅在调试模式下显示
    - 不暴露内部堆栈跟踪信息
+6. **写操作权限控制**
+   - 默认禁用写入、格式化和会修改工作簿的工作表管理操作
+   - 可通过 `EXCEL_ALLOW_WRITE=true`、`yes` 或 `y` 启用
+   - 关闭值支持 `false`、`no`、`n`
 
 ### 用户最佳实践
 
@@ -873,4 +887,3 @@ SOFTWARE.
 ## 🌐 其他语言版本
 
 - [English Version](./README.en.md) | **中文版本（当前）**
-
